@@ -1,0 +1,65 @@
+version: '2'
+services:
+  php_shop_roslo_symfony:
+    build:
+      context: ./serverphp/
+    volumes:
+      - ./serverphp/shop:/var/www/html
+      - ./include/php/php.ini:/usr/local/etc/php/php.ini
+      - ./include/ssl:/etc/apache2/ssl
+      - ./include/sites-enabled/prod/shop:/etc/apache2/sites-enabled
+    container_name: php-shop-roslo-symfony
+    ports:
+      - "8111:80"
+    links:
+      - mysql_shop_roslo
+      - elasticsearch
+  #  administrator/c8b693cf0af6f8522b88ce6d8e1748c1
+  php_shop_roslo_joomla:
+    build:
+      context: ./serverphp
+    volumes:
+      - ./serverphp/landing:/var/www/html
+      - ./include/php/php.ini:/usr/local/etc/php/php.ini
+      - ./include/ssl:/etc/apache2/ssl
+      - ./include/sites-enabled/prod/landing:/etc/apache2/sites-enabled
+    container_name: php-shop-roslo-cms
+    ports:
+      - "8119:80"
+    links:
+      - mysql_shop_roslo
+  mysql_shop_roslo:
+    image: mysql
+    container_name: mysql-shop-roslo
+    # or use ALTER USER root IDENTIFIED WITH mysql_native_password BY 'password';
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 8113:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: sisja
+    volumes:
+      - ./include/db:/home/
+  phpmyadmin_shop_roslo:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mysql_shop_roslo
+    environment:
+      PMA_HOST: mysql_shop_roslo
+      PMA_PORT: 3306
+    ports:
+      - '8114:80'
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+    container_name: elasticsearch
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./include/esdata:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200

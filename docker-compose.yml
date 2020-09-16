@@ -1,0 +1,50 @@
+version: '2'
+services:
+  snau_symfony:
+    build:
+      context: ./serverphp/
+    volumes:
+      - ./serverphp/snau:/var/www/html
+      - ./include/php/php.ini:/usr/local/etc/php/php.ini
+      - ./include/ssl:/etc/apache2/ssl
+      - ./include/sites-enabled/dev/snau:/etc/apache2/sites-enabled
+    container_name: snau-symfony
+    ports:
+      - "8511:80"
+    links:
+      - snau_mysql
+      - snau_elasticsearch
+  #  administrator/c8b693cf0af6f8522b88ce6d8e1748c1
+  snau_mysql:
+    image: mysql
+    container_name: snau-mysql
+    # or use ALTER USER root IDENTIFIED WITH mysql_native_password BY 'password';
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 8513:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: sisja
+    volumes:
+      - ./include/db:/home/
+  snau_phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - snau_mysql
+    environment:
+      PMA_HOST: snau_mysql
+      PMA_PORT: 3306
+    ports:
+      - '8514:80'
+  snau_elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+    container_name: snau_elasticsearch
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9250:9200

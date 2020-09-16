@@ -1,0 +1,3 @@
+activation:
+    path: /user/form/activation/{hash}/
+    controller: App\Controller\UserController::activation
