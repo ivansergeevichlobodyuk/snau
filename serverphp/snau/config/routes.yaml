@@ -1,3 +1,11 @@
 activation:
     path: /user/form/activation/{hash}/
     controller: App\Controller\UserController::activation
+
+profile:
+    path: /
+    controller: App\Controller\UserController::profile
+
+app_login:
+    path: /login
+    controller: App\Controller\SecurityController:login
