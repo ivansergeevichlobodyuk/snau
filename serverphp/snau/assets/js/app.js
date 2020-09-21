@@ -18,5 +18,5 @@ import Icons from 'uikit/dist/js/uikit-icons';
 import '../../node_modules/uikit/dist/css/uikit.my-theme.min.css';
 
 UIkit.use(Icons);
-UIkit.notification('Hello world.');
+// UIkit.notification('Hello world.');
 console.log('Hello Webpack Encore! Edit me in assets/js/app.js');

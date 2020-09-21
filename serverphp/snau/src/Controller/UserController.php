@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\Type\UserType;
 use Composer\DependencyResolver\Request;
+use Picqer\Barcode\Barcode;
+use Picqer\Barcode\BarcodeGeneratorHTML;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,7 +53,13 @@ class UserController extends AbstractController
      *
      */
     public function profile(){
+        $user = $this->getUser();
+        if ( $this->getUser() ){
+            $generator =  new BarcodeGeneratorHTML();
+            $barcode =  $generator->getBarcode('081231723897', $generator::TYPE_CODE_128);
+        }
         return $this->render('user/profile.html.twig', [
+            'barcode' => $barcode,
             'user' => $this->getUser()
         ]);
     }
