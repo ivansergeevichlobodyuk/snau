@@ -15,7 +15,7 @@ import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
 
 /**uikit theme**/
-import '../../node_modules/uikit/dist/css/uikit.my-theme.min.css';
+import '../../node_modules/uikit/dist/css/uikit.css';
 
 UIkit.use(Icons);
 // UIkit.notification('Hello world.');

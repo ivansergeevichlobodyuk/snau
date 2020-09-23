@@ -3,25 +3,36 @@
 {% block title %}Hello UserController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    /*.example-wrapper code { background: #F5F5F5; padding: 2px 6px; }*/
-</style>
-    <a class="uk-link-muted" href="{{ path("app_logout") }}">Logout</a>
-    <div>
-        {{ barcode|raw }}
+    <div class="profile  uk-position-center">
+        <div class="uk-width-medium">
+            <div class="uk-text-center uk-background-muted uk-padding-small">
+                <div class="uk-text-center">
+                    {{ barcode|raw }}
+                </div>
+                <div>
+                    <img src="{{ qr_code_data_uri(app.user.code, { writer: 'svg', size: 150 }) }}"/>
+                </div>
+            </div>
+
+            <div class="profile-info uk-margin-top">
+                <ul class="uk-list">
+                    <li class="uk-text-bold">{{ user.name }} {{ user.surname }}</li>
+                    {# <label>{{ "NAME"|trans }}</label> #}
+                    {# <label>{{ "USERNAME"|trans }}</label> #}
+
+                    {# <label>{{ "PHONE"|trans }}</label> #}
+                    <li class="uk-text-bold">{{ user.phone }}</li>
+                    <li><span class="uk-text-bold">{{ "BUILD"|trans }}</span> - {{ user.build }}</li>
+                    <li><span class="uk-text-bold">{{ "FLAT"|trans }}</span> - {{ user.flatNum }}</li>
+                </ul>
+            </div>
+            <div class="uk-margin-top uk-text-center">
+                <a class="custom-btn uk-button" href="{{ path("app_logout") }}">Logout</a>
+            </div>
+
+        </div>
     </div>
-    <div>
-        <img src="{{ qr_code_data_uri(app.user.code, { writer: 'svg', size: 150 }) }}" />
-    </div>
-<div>
-    <ul>
-        <label>{{ "NAME"|trans }}</label>{{ user.name }}
-        <label>{{ "USERNAME"|trans }}</label><li>{{ user.surname }}</li>
-        <label>{{ "PHONE"|trans }}</label><li>{{ user.phone }}</li>
-        <label>{{ "BUILD"|trans }}</label><li>{{ user.build }}</li>
-        <label>{{ "FLAT"|trans }}</label><li>{{ user.flatNum }}</li>
-    </ul>
-</div>
+
+
 
 {% endblock %}

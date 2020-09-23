@@ -3,20 +3,22 @@
 {% block title %}Hello UserController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="login-page-wrap">
+        <div class="uk-position-center uk-padding-small">
+            <div class="uk-text-center">
+                <img class="uk-width-small" src="{{ asset('build/images/snau-logo.png') }}" alt="logo">
+            </div>
+            <h3 class="uk-text-center">Hello, {{ user.name ~ ' '~ user.surname }}!</h3>
+            This friendly message is coming from:
+                {{ form_start(form, {'attr':{'id': 'updated', 'method':'POST', 'action':path('activation',{'hash':app.request.get('hash')}) } }) }}
+                {{ form_row(form.plainPassword.first, {'label_attr': {'class': 'uk-form-label uk-margin-top uk-display-block'}, 'attr': {'class': 'uk-input uk-form-small'}}) }}
+                {{ form_row(form.plainPassword.second, {'label_attr': {'class': 'uk-form-label uk-margin-top uk-display-block'}, 'attr': {'class': 'uk-input uk-form-small'}}) }}
+            <div class="uk-text-center uk-margin-top">
+                <button class="custom-btn uk-button " type="submit">{{ "REGISTER"|trans }}</button>
+            </div>
 
-<div class="example-wrapper">
-    <h1>Hello, {{ user.name ~ ' '~ user.surname }}! ✅</h1>
-    This friendly message is coming from:
-    <ul>
-        {{ form_start(form, {'attr':{'id': 'updated', 'method':'POST', 'action':path('activation',{'hash':app.request.get('hash')}) } }) }}
-        {{ form_row(form.plainPassword.first, {'label_attr': {'class': 'uk-form-label'}, 'attr': {'class': 'uk-input'}}) }}
-        {{ form_row(form.plainPassword.second, {'label_attr': {'class': 'uk-form-label'}, 'attr': {'class': 'uk-input'}}) }}
-            <button class="custom-btn uk-button uk-align-center uk-margin-top" type="submit">{{ "REGISTER"|trans }}</button>
-        {{ form_end(form) }}
-    </ul>
-</div>
+                {{ form_end(form) }}
+        </div>
+    </div>
+
 {% endblock %}
